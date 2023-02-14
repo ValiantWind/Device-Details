@@ -4,7 +4,7 @@ const deviceMemory = document.getElementById("deviceMemory");
 const batteryLevel = document.getElementById("batteryLevel");
 const isFullscreen = document.getElementById("isFullscreen")
 
-isFullscreen.innerHTML = `Fullscreen Enabled?: ${fullscreenEnabled.fullscreenEnabled}`
+isFullscreen.innerHTML = `Fullscreen Enabled?: ${document.fullscreenEnabled}`
 deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
 navigator.storage.estimate().then((estimate) => {
   deviceStorage.innerHTML =
@@ -12,7 +12,6 @@ navigator.storage.estimate().then((estimate) => {
 });
 
 getBatteryLevel()
-
 
 async function getBatteryLevel(){
 	if (!navigator.getBattery) {
@@ -25,7 +24,6 @@ async function getBatteryLevel(){
 		}
   }
 }
-
 
 function locationDetails(){
 	if(document.getElementById("locationDetails")){
