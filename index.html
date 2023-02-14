@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+  <head>
+    <meta charset="UTF-8" />
+		<meta name="description" content="Your Device Details (NOT STORED)">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="keywords" content="HTML, CSS, JavaScript">
+		<meta name="author" content="ValiantWind">
+    <title>Device Details</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+	
+  <body>
+    <div class="main">		
+      <h1>Your Device Details</h1>
+			<a href="https://github.com/ValiantWind/Device-Details"><h3 align="center">Open-source</h3></a>
+      <h3 align="center">I do not store any of your data.</h3>	
+			<h4 align="center">The Details below are not guaranteed to be accurate.</h4>
+			
+			<br>
+			<br>
+			
+		<h4 align="center" id="isFullscreen"></h4>
+		<h4 align="center" id="deviceStorage"></h4>
+		<h4 align="center" id="deviceMemory"></h4>
+    <h4 align="center" id="batteryLevel"></h4>
+		<h4 align="center" id="countryPopulation"></h4>
+    <h4 align="center" id="countryCurrency"></h4>
+		<h4 align="center" id="postal"></h4>
+		<h4 align="center" id="timezone"></h4>
+			
+			<br>
+			<br>
+
+			<button align="center" type="button" id="locationDetails" onclick="locationDetails()">
+			View Your Location Details
+		</button>
+			
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+		<!-- Obviously needed for this to work at all -->
+		<script src="script.js"></script>
+		
+  </body>
+</html>
