@@ -5,8 +5,6 @@ const batteryLevel = document.getElementById("batteryLevel");
 const isFullscreen = document.getElementById("isFullscreen");
 const networkConnectionType = document.getElementById("networkType");
 
-isFullscreen.innerHTML = `Fullscreen Enabled?: ${document.fullscreenEnabled}`;
-
 deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
 
 navigator.storage.estimate().then((estimate) => {
