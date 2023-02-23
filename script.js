@@ -2,16 +2,26 @@ const buttons = document.getElementsByTagName("button");
 const deviceStorage = document.getElementById("deviceStorage");
 const deviceMemory = document.getElementById("deviceMemory");
 const batteryLevel = document.getElementById("batteryLevel");
-const isFullscreen = document.getElementById("isFullscreen")
+const isFullscreen = document.getElementById("isFullscreen");
+const networkConnectionType = document.getElementById("networkType");
 
-isFullscreen.innerHTML = `Fullscreen Enabled?: ${document.fullscreenEnabled}`
+isFullscreen.innerHTML = `Fullscreen Enabled?: ${document.fullscreenEnabled}`;
+
 deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
+
 navigator.storage.estimate().then((estimate) => {
   deviceStorage.innerHTML =
 		`Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
 });
 
 getBatteryLevel()
+
+if(navigator.connection === undefined){
+	networkConnectionType.innerHTML = "Network Type: Unsupported on your browser"
+} else {
+		const networkType = navigator.connection.type
+networkConnectionType.innerHTML = "Network Type: " + networkType.charAt(0).toUpperCase() + networkType.slice(1) || "Network Type: Unsupported on your browser"
+}
 
 async function getBatteryLevel(){
 	if (!navigator.getBattery) {
@@ -29,6 +39,19 @@ function locationDetails(){
 	if(document.getElementById("locationDetails")){
 		window.location.href = "https://ValiantWind.github.io/Location-Details"
 	}	
+}
+
+function revealIpAddress(){
+	if(document.getElementById("showIpAddress")) {
+		const revealIpAddress = document.getElementById("showIpAddress");
+		 revealIpAddress.parentNode.removeChild(revealIpAddress);
+		axios.get(`https://api.valiantwind.me/get-ip-address`).then((response) => {
+			document.getElementById("ipAddress").innerHTML = "IP Address: " + response.data
+		}).catch((error) => {
+			console.log(error)
+			document.getElementById("ipAddress").innerHTML = "IP Address: Could not fetch IP Address"
+		})
+	}
 }
 function createRipple(event) {
 	const button = event.currentTarget;

@@ -79,14 +79,15 @@ button {
   background-color: #2BB1FF;
   padding: 1rem 2rem;
   font-family: 'Gotham Screen Smart', Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   outline: 0;
   border: 0;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3); /* black with 30% opacity */
   cursor: pointer;
-	margin: 10px;
+	margin: 5px;
 }
+
 
 span.ripple {
   position: absolute;
