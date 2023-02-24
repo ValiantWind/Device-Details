@@ -8,42 +8,42 @@ const networkConnectionType = document.getElementById("networkType");
 deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
 
 navigator.storage.estimate().then((estimate) => {
-  deviceStorage.innerHTML =
+	deviceStorage.innerHTML =
 		`Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
 });
 
 getBatteryLevel()
 
-if(navigator.connection === undefined){
+if (navigator.connection === undefined || !networkConnectionType) {
 	networkConnectionType.innerHTML = "Network Type: Unsupported on your browser"
 } else {
-		const networkType = navigator.connection.type
-networkConnectionType.innerHTML = "Network Type: " + networkType.charAt(0).toUpperCase() + networkType.slice(1) || "Network Type: Unsupported on your browser"
+	const networkType = navigator.connection.type
+	networkConnectionType.innerHTML = `Network Type: ${networkType}`
 }
 
-async function getBatteryLevel(){
+async function getBatteryLevel() {
 	if (!navigator.getBattery) {
-    batteryLevel.textContent = "Battery Level: Unsupported on your browser";
-  } else {
-    const battery = await navigator.getBattery();
-    const level = battery.level;
-		if(batteryLevel){
+		batteryLevel.textContent = "Battery Level: Unsupported on your browser";
+	} else {
+		const battery = await navigator.getBattery();
+		const level = battery.level;
+		if (batteryLevel) {
 			batteryLevel.innerHTML = `Battery Level: ${level * 100}%`
 		}
-  }
+	}
 }
 
-function locationDetails(){
-	if(document.getElementById("locationDetails")){
+function locationDetails() {
+	if (document.getElementById("locationDetails")) {
 		window.location.href = "https://ValiantWind.github.io/Location-Details"
-	}	
+	}
 }
 
-function revealIpAddress(){
-	if(document.getElementById("showIpAddress")) {
+async function revealIpAddress() {
+	if (document.getElementById("showIpAddress")) {
 		const revealIpAddress = document.getElementById("showIpAddress");
-		 revealIpAddress.parentNode.removeChild(revealIpAddress);
-		axios.get(`https://api.valiantwind.me/get-ip-address`).then((response) => {
+		revealIpAddress.parentNode.removeChild(revealIpAddress);
+		await axios.get(`https://api.valiantwind.me/get-ip-address`).then((response) => {
 			document.getElementById("ipAddress").innerHTML = "IP Address: " + response.data
 		}).catch((error) => {
 			console.log(error)
