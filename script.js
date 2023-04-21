@@ -43,7 +43,7 @@ async function revealIpAddress() {
 	if (document.getElementById("showIpAddress")) {
 		const revealIpAddress = document.getElementById("showIpAddress");
 		revealIpAddress.parentNode.removeChild(revealIpAddress);
-		await axios.get(`https://api.valiantwind.dev/get-ip-address`).then((response) => {
+		await axios.get(`https://api.valiantwind.dev/v1/get-ip-address`).then((response) => {
 			document.getElementById("ipAddress").innerHTML = "IP Address: " + response.data
 		}).catch((error) => {
 			console.log(error)
