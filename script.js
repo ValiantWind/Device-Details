@@ -20,11 +20,15 @@ const os = [
 
 deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
 
+function megabytesToGigabytes(megabytes) {
+  return megabytes / 1024;
+}
 
 navigator.storage.estimate().then((estimate) => {
-	
+	console.log(estimate.quota);
 	deviceStorage.innerHTML =
-		`Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
+		// `Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
+		`Total Device Storage Estimate: ${megabytesToGigabytes(estimate.quota * 0.000001).toFixed(2)} GB`
 });
 
 getBatteryLevel()
@@ -33,6 +37,7 @@ if (navigator.connection === undefined || !networkConnectionType) {
 	networkConnectionType.innerHTML = "Network Type: Unsupported on your browser."
 } else {
 	const networkType = navigator.connection.type
+	console.log(networkType);
 	if(networkType === "wifi"){
 		networkConnectionType.innerHTML = `Network Type: WiFi`
 	} else {
@@ -58,15 +63,16 @@ function locationDetails() {
 	}
 }
 
-async function revealIpAddress() {
+function revealIpAddress() {
 	if (document.getElementById("showIpAddress")) {
 		const revealIpAddress = document.getElementById("showIpAddress");
 		revealIpAddress.parentNode.removeChild(revealIpAddress);
 		try {
-		await axios.get(`https://api.valiantwind.dev/v1/get-ip-address`).then((response) => {
+			axios.get(`https://api.valiantwind.dev/v1/get-ip-address`).then((response) => {
 			document.getElementById("ipAddress").innerHTML = "IP Address: " + response.data
 		}).catch((error) => {
 			console.log(error)
+			console.log(response.data)
 			document.getElementById("ipAddress").innerHTML = `IP Address: Could not fetch IP Address.`
 		})
 		} catch (e){
