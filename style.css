@@ -71,6 +71,17 @@ h4{
     font-weight: 500;
 }
 
+p{
+    color: white;
+    margin: 5px;
+    font-family: 'Gotham Screen Smart', sans-serif;
+    font-style: italic;
+		align-items: center;
+		align-content: center;
+    font-weight: 300;
+}
+
+
 button {
   position: relative;
   overflow: hidden;
@@ -99,7 +110,7 @@ span.ripple {
 
 @keyframes ripple {
   to {
-    transform: scale(4);
+    transform: scale(3);
     opacity: 0;
   }
 }
