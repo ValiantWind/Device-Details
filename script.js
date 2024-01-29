@@ -9,7 +9,7 @@ const browserCookiedEnabled = document.getElementById("cookiedEnabled")
 
 let userAgent = navigator.userAgent;
 
-deviceOS.innerHTML = `OS: ${getOS()};`
+deviceOS.innerHTML = `OS: ${getOS()}`;
 browserCookiedEnabled.innerHTML = `Browser Cookies Enabled: ${cookiesEnabled()}`;
 
 getResolutionAsync().then((res) => {
@@ -52,7 +52,7 @@ if(navigator.deviceMemory === undefined){
 
 
 if (navigator.connection === undefined || !networkConnectionType) {
-	networkConnectionType.innerHTML = "Network Type: Unsupported on your browser."
+	networkConnectionType.innerHTML = "Network Type: Unsupported on your browser"
 } else {
 	const networkType = navigator.connection.type
 	console.log(networkType);
