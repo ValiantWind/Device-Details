@@ -9,25 +9,33 @@ const browserCookiedEnabled = document.getElementById("cookiedEnabled")
 
 let userAgent = navigator.userAgent;
 
-batteryLevel.innerHTML = `Battery Level: ${getBatteryLevel()}%`
 deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
 deviceOS.innerHTML = `OS: ${getOS()};`
-browserName.innerHTML = `Browser: ${getBrowser()};`
 browserCookiedEnabled.innerHTML = `Browser Cookies Enabled: ${cookiesEnabled()}`;
 
-getResolutionAsync().then((result) => {
-		resolution.innerHTML = `Resolution: ${result}`;
-
+getResolutionAsync().then((res) => {
+		resolution.innerHTML = `Resolution: ${res}`;
 }).catch((error) => {
 		console.error(error);
 });
 
+getBatteryLevelAsync().then((level) => {
+	batteryLevel.innerHTML = `Battery Level: ${level}%`
+}).catch((error) => {
+	console.error(error);
+});
+
+getBrowserAsync().then((browser) => {
+	browserName.innerHTML = `Browser: ${browser}`;
+}).catch((error) => {
+	console.error(error)
+});
 
 navigator.storage.estimate().then((estimate) => {
 	console.log(estimate.quota);
 	deviceStorage.innerHTML =
-		// `Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
-		`Total Device Storage Estimate: ${megabytesToGigabytes(estimate.quota * 0.000001).toFixed(2)} GB`
+		`Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
+		// `Total Device Storage Estimate: ${megabytesToGigabytes(estimate.quota * 0.000001).toFixed(2)} GB`
 });
 
 
@@ -43,7 +51,7 @@ if (navigator.connection === undefined || !networkConnectionType) {
 	}
 }
 
-async function getBatteryLevel() {
+async function getBatteryLevelAsync() {
 	if (!navigator.getBattery || navigator.getBattery === undefined) {
 		return "Unsupported on your browser";
 	} else {
@@ -87,6 +95,8 @@ function cookiesEnabled(){
 		return true;
 	}
 
+	document.cookie = "cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT";
+
 	return false;
 }
 
@@ -102,80 +112,84 @@ function getResolutionAsync() {
 		});
 }
 
-async function getBrowser(){
-	if(userAgent.indexOf("Chrome") >= 0){
-		if (userAgent.match(/\bChrome\/[.0-9]* Mobile\b/)) {
-				if (userAgent.match(/\bVersion\/\d+\.\d+\b/) || userAgent.match(/\bwv\b/)) {
-						return "WebView on Android"
-				} else {
-						return "Google Chrome for Android"
-				}
-		} else {
-				return "Google Chrome"
+function getBrowserAsync(){
+	return new Promise((resolve, reject) => {
+		try {
+		if(userAgent.indexOf("Chrome") >= 0){
+			if (userAgent.match(/\bChrome\/[.0-9]* Mobile\b/)) {
+					if (userAgent.match(/\bVersion\/\d+\.\d+\b/) || userAgent.match(/\bwv\b/)) {
+						resolve("WebView for Android")
+					} else {
+						resolve("Google Chrome for Android")
+					}
+			} else {
+					resolve("Google Chrome");
+			}
 		}
-	}
 
-	if(userAgent.indexOf("Edge") >= 0){
-		return "Microsoft Edge";
-	}
+		if(userAgent.indexOf("Edge") >= 0){
+		resolve("Microsoft Edge")
+		}
 
-	if (userAgent.indexOf("Firefox") >= 0 && userAgent.indexOf("Seamonkey") === -1) {
-			if (userAgent.indexOf("Android") >= 0) {
-					return "Firefox for Android";
-			} else {
-					return "Firefox"
-			}
-	}
+		if (userAgent.indexOf("Firefox") >= 0 && userAgent.indexOf("Seamonkey") === -1) {
+				if (userAgent.indexOf("Android") >= 0) {
+						resolve("Firefox for Android")
+				} else {
+						resolve("Firefox")
+				}
+		}
 
-	if (userAgent.indexOf("OPR") >= 0 || userAgent.indexOf("Opera") >= 0) {
-			if (userAgent.indexOf("Opera Mobi") >= 0 || userAgent.indexOf("Opera Tablet") >= 0 || userAgent.indexOf("Mobile") >= 0) {
-					return "Opera Mobile";
-			} else if (userAgent.indexOf("Opera Mini") >= 0) {
-					return "Opera Mini";
-			} else {
-					return "Opera";
-			}
-	}
+		if (userAgent.indexOf("OPR") >= 0 || userAgent.indexOf("Opera") >= 0) {
+				if (userAgent.indexOf("Opera Mobi") >= 0 || userAgent.indexOf("Opera Tablet") >= 0 || userAgent.indexOf("Mobile") >= 0) {
+						resolve("Opera Mobile")
+				} else if (userAgent.indexOf("Opera Mini") >= 0) {
+						resolve("Opera Mini")
+				} else {
+						resolve("Opera")
+				}
+		}
 
-	if (userAgent.indexOf("Safari") >= 0 && userAgent.indexOf("Chrome") === -1 && userAgent.indexOf("Chromium") === -1 && userAgent.indexOf("Android") === -1) {
-			if (userAgent.indexOf("CriOS") >= 0) {
-					return "Chrome for iOS";
-			} else if (userAgent.indexOf("FxiOS") >= 0) {
-					return "Firefox for iOS";
-			} else {
-					return "Safari";
-			}
-	}
+		if (userAgent.indexOf("Safari") >= 0 && userAgent.indexOf("Chrome") === -1 && userAgent.indexOf("Chromium") === -1 && userAgent.indexOf("Android") === -1) {
+				if (userAgent.indexOf("CriOS") >= 0) {
+					resolve("Chrome for iOS")
+				} else if (userAgent.indexOf("FxiOS") >= 0) {
+						resolve("Firefox for iOS")
+				} else {
+						resolve("Safari")
+				}
+		}
 
-	if (userAgent.indexOf("Trident") >= 0 || userAgent.indexOf("MSIE") >= 0) {
-			if (userAgent.indexOf("Mobile") >= 0) {
-					return "IE Mobile";
-			} else {
-					return "Internet Explorer";
-			}
-	}
+		if (userAgent.indexOf("Trident") >= 0 || userAgent.indexOf("MSIE") >= 0) {
+				if (userAgent.indexOf("Mobile") >= 0) {
+						resolve("IE Mobile")
+				} else {
+						resolve("Internet Explorer")
+				}
+		}
 
-	if (userAgent.indexOf("Android") >= 0 && userAgent.indexOf("Chrome") === -1 && userAgent.indexOf("Chromium") === -1 && userAgent.indexOf("Trident") === -1 && userAgent.indexOf("Firefox") === -1) {
-			return "Android Browser";
-	}
+		if (userAgent.indexOf("Android") >= 0 && userAgent.indexOf("Chrome") === -1 && userAgent.indexOf("Chromium") === -1 && userAgent.indexOf("Trident") === -1 && userAgent.indexOf("Firefox") === -1) {
+				resolve("Android Browser");
+		}
 
-	if (userAgent.indexOf("BB10") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("BlackBerry") >= 0) {
-			return "BlackBerry";
-	}
+		if (userAgent.indexOf("BB10") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("BlackBerry") >= 0) {
+				resolve("BlackBerry");
+		}
 
-	if (userAgent.indexOf("UCBrowser") >= 0) {
-			return "UC Browser for Android";
-	}
+		if (userAgent.indexOf("UCBrowser") >= 0) {
+				resolve("UC Browser for Android");
+		}
 
-	if (userAgent.indexOf("SamsungBrowser") >= 0) {
-			return "Samsung Internet";
-	}
+		if (userAgent.indexOf("SamsungBrowser") >= 0) {
+				resolve("Samsung Internet")
+		}
 
-	if (userAgent.indexOf("MQQBrowser") >= 0) {
-			return "QQ Browser";
-	}
-
-	return "Could not detect browser";
+		if (userAgent.indexOf("MQQBrowser") >= 0) {
+				resolve("QQ Browser");
+		}
+		} catch (e) {
+			reject(e);	
+		}
+	})
 }
 
 function getOS(){
