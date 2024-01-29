@@ -1,11 +1,12 @@
 const deviceStorage = document.getElementById("deviceStorage");
 const deviceMemory = document.getElementById("deviceMemory");
-const batteryLevel = document.querySelector("#batteryLevel");
 const resolution = document.getElementById("screenResolution");
 const networkConnectionType = document.getElementById("networkType");
 const deviceOS = document.getElementById("deviceOS");
 const browserName = document.getElementById("browserName");
-const browserCookiedEnabled = document.getElementById("cookiedEnabled")
+const browserCookiedEnabled = document.getElementById("cookiedEnabled");
+let batteryLevel = document.querySelector("#batteryLevel");
+let batteryStatus = document.querySelector("#batteryCharging");
 
 let userAgent = navigator.userAgent;
 
@@ -18,15 +19,50 @@ getResolutionAsync().then((res) => {
 		console.error(error);
 });
 
-getBatteryLevelAsync().then((level) => {
-	if(level === "Unsupported on your browser"){
-			batteryLevel.textContent = `Battery Level: ${level}`;
-	} else {
-			batteryLevel.textContent = `Battery Level: ${level}%`;
-	}
-}).catch((error) => {
-	console.error(error);
-});
+// getBatteryLevelAsync().then((level) => {
+// 	if(level === "Unsupported on your browser"){
+// 			batteryLevel.textContent = `Battery Level: ${level}`;
+// 	} else {
+// 			batteryLevel.textContent = `Battery Level: ${level}%`;
+// 	}
+// }).catch((error) => {
+// 	console.error(error);
+// });
+
+
+async function getBatteryLevelAsync() {
+	await navigator.getBattery().then((battery) => {
+
+		if (!navigator.getBattery() || navigator.getBattery() === undefined){
+			batteryStatus.textContent = "Battery Status: Unsupported on your browser";
+			batteryLevel.textContent = "Battery Level: Unsupported on your browser";
+		} else {
+				batteryLevel.textContent = `Battery Level: ${battery.level * 100}%`;
+
+			if (battery.charging) {
+				batteryStatus.textContent = `Battery Status: Charging`;
+			} else {
+				batteryStatus.textContent =
+					`Battery Status: Not Charging`;
+			}
+		}
+
+		battery.onlevelchange = () => {
+			batteryLevel.textContent = `Battery Level: ${battery.level * 100}%`;
+
+			if (battery.charging) {
+				batteryStatus.textContent = `Battery Status: Charging`;
+			} else {
+				batteryStatus.textContent =
+					`Battery Status: Not Charging`;
+			}
+		};
+	}).catch((error) => {
+		console.log(error)	
+	});
+}
+
+getBatteryLevelAsync()
 
 getBrowserAsync().then((browser) => {
 	browserName.innerHTML = `Browser: ${browser}`;
@@ -34,19 +70,19 @@ getBrowserAsync().then((browser) => {
 	console.error(error)
 });
 
-navigator.getBattery().then((battery) => {
-	const isCharging = battery.charging;
+// navigator.getBattery().then((battery) => {
+// 	const isCharging = battery.charging;
 
-	if (!navigator.getBattery || navigator.getBattery === undefined){
-		document.querySelector("#batteryCharging").textContent = "Battery Status: Unupported on your browser";
-	}
+// 	if (!navigator.getBattery || navigator.getBattery === undefined){
+// 		document.querySelector("#batteryCharging").textContent = "Battery Status: Unupported on your browser";
+// 	}
 
-	if(isCharging === true){
-			document.querySelector("#batteryCharging").textContent = "Battery Status: Charging";
-	} else if (isCharging === false) {
-		document.querySelector("#batteryCharging").textContent = "Battery Status: Not Charging";
-	}
-})
+// 	if(isCharging === true){
+// 			document.querySelector("#batteryCharging").textContent = "Battery Status: Charging";
+// 	} else if (isCharging === false) {
+// 		document.querySelector("#batteryCharging").textContent = "Battery Status: Not Charging";
+// 	}
+// })
 
 // navigator.storage.estimate().then((estimate) => {
 // 	console.log(estimate.quota);
@@ -75,17 +111,17 @@ if (navigator.connection === undefined || !networkConnectionType) {
 		networkConnectionType.innerHTML = `Network Type: ${networkType}`
 }
 
-async function getBatteryLevelAsync() {
-	if (!navigator.getBattery || navigator.getBattery === undefined) {
-		return "Unsupported on your browser";
-	} else {
-		const battery = await navigator.getBattery();
-		const level = battery.level;
-		if (batteryLevel) {
-			return level * 100
-		}
-	}
-}
+// async function getBatteryLevelAsync() {
+// 	if (!navigator.getBattery || navigator.getBattery === undefined) {
+// 		return "Unsupported on your browser";
+// 	} else {
+// 		const battery = await navigator.getBattery();
+// 		const level = battery.level;
+// 		if (batteryLevel) {
+// 			return level * 100
+// 		}
+// 	}
+// }
 
 function locationDetails() {
 	if (document.getElementById("locationDetails")) {
