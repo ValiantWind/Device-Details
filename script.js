@@ -9,7 +9,6 @@ const browserCookiedEnabled = document.getElementById("cookiedEnabled")
 
 let userAgent = navigator.userAgent;
 
-deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
 deviceOS.innerHTML = `OS: ${getOS()};`
 browserCookiedEnabled.innerHTML = `Browser Cookies Enabled: ${cookiesEnabled()}`;
 
@@ -20,7 +19,11 @@ getResolutionAsync().then((res) => {
 });
 
 getBatteryLevelAsync().then((level) => {
-	batteryLevel.innerHTML = `Battery Level: ${level}%`
+	if(level === "Unsupported on your browser"){
+			batteryLevel.innerHTML = `Battery Level: ${level}`;
+	} else {
+			batteryLevel.innerHTML = `Battery Level: ${level}%`;
+	}
 }).catch((error) => {
 	console.error(error);
 });
@@ -33,10 +36,19 @@ getBrowserAsync().then((browser) => {
 
 navigator.storage.estimate().then((estimate) => {
 	console.log(estimate.quota);
+	
 	deviceStorage.innerHTML =
-		`Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
+		// `Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
 		// `Total Device Storage Estimate: ${megabytesToGigabytes(estimate.quota * 0.000001).toFixed(2)} GB`
+
+		((estimate.usage / estimate.quota) * 100).toFixed(2);
 });
+
+if(navigator.deviceMemory === undefined){
+	deviceMemory.innerHTML = `Device Memory: Unsupported on your browser`;
+} else {
+	deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
+}
 
 
 if (navigator.connection === undefined || !networkConnectionType) {
