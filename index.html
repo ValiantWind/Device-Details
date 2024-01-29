@@ -14,17 +14,19 @@
   <body>
     <div class="main">		
       <h1>Your Device Details</h1>
-			<a href="https://github.com/ValiantWind/Device-Details"><h3 align="center">Open-source</h3></a>
+			<a href="https://github.com/ValiantWind/Device-Details"><h2 align="center">Open-source</h2></a>
 			<h3 align="center">The Details below are not guaranteed to be accurate.</h3>
 			<p>Some of these details are obvious. I just included them for the sake of it.</p>
 			<br>
-			
-		<h4 align="center" id="isFullscreen"></h4>
+
+		<h4 align="center" id="deviceOS"></h4>
+		<h4 align="center" id="browserName"></h4>
+		<h4 align="center" id="screenResolution"></h4>
+		<h4 align="center" id="cookiedEnabled"></h4>
 		<h4 align="center" id="deviceStorage"></h4>
 		<h4 align="center" id="deviceMemory"></h4>
     <h4 align="center" id="batteryLevel"></h4>
 		<h4 align="center" id="networkType"></h4>
-		<h4 align="center" id="deviceOS"></h4>
     <h4 align="center" id="ipAddress">IP Address: <button type="button" id="showIpAddress" onclick="revealIpAddress()">Click to reveal</button></h4>
 			
 			<br>
@@ -39,6 +41,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
 		<!-- Obviously needed for this to work at all -->
 		<script src="script.js"></script>
+		<script src="ripple.js"></script>
 		
   </body>
 </html>
