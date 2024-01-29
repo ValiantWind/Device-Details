@@ -16,7 +16,7 @@ browserName.innerHTML = `Browser: ${getBrowser()};`
 browserCookiedEnabled.innerHTML = `Browser Cookies Enabled: ${cookiesEnabled()}`;
 
 getResolutionAsync().then((result) => {
-		cresolution.innerHTML = `Resolution: ${result}`;
+		resolution.innerHTML = `Resolution: ${result}`;
 
 }).catch((error) => {
 		console.error(error);
@@ -43,7 +43,7 @@ if (navigator.connection === undefined || !networkConnectionType) {
 	}
 }
 
-function getBatteryLevel() {
+async function getBatteryLevel() {
 	if (!navigator.getBattery || navigator.getBattery === undefined) {
 		return "Unsupported on your browser";
 	} else {
