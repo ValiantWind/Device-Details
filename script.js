@@ -13,8 +13,14 @@ batteryLevel.innerHTML = `Battery Level: ${getBatteryLevel()}%`
 deviceMemory.innerHTML = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
 deviceOS.innerHTML = `OS: ${getOS()};`
 browserName.innerHTML = `Browser: ${getBrowser()};`
-resolution.innerHTML = `Resolution: ${getResolution()}`;
 browserCookiedEnabled.innerHTML = `Browser Cookies Enabled: ${cookiesEnabled()}`;
+
+getResolutionAsync().then((result) => {
+		cresolution.innerHTML = `Resolution: ${result}`;
+
+}).catch((error) => {
+		console.error(error);
+});
 
 
 navigator.storage.estimate().then((estimate) => {
@@ -84,12 +90,19 @@ function cookiesEnabled(){
 	return false;
 }
 
-function getResolution(){
-	const screen = window.screen;
-	return `${screen.width}x${screen.height}`;
+function getResolutionAsync() {
+		return new Promise((resolve, reject) => {
+				try {
+						const screen = window.screen;
+						const resolution = `${screen.width}x${screen.height}`;
+						resolve(resolution);
+				} catch (error) {
+						reject(error);
+				}
+		});
 }
 
-function getBrowser(){
+async function getBrowser(){
 	if(userAgent.indexOf("Chrome") >= 0){
 		if (userAgent.match(/\bChrome\/[.0-9]* Mobile\b/)) {
 				if (userAgent.match(/\bVersion\/\d+\.\d+\b/) || userAgent.match(/\bwv\b/)) {
