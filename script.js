@@ -34,15 +34,15 @@ getBrowserAsync().then((browser) => {
 	console.error(error)
 });
 
-navigator.storage.estimate().then((estimate) => {
-	console.log(estimate.quota);
+// navigator.storage.estimate().then((estimate) => {
+// 	console.log(estimate.quota);
 	
-	deviceStorage.innerHTML =
-		// `Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
-		// `Total Device Storage Estimate: ${megabytesToGigabytes(estimate.quota * 0.000001).toFixed(2)} GB`
+// 	deviceStorage.innerHTML =
+// 		// `Total Device Storage Estimate: ${(estimate.quota * 0.000001).toFixed(2)} MB`
+// 		// `Total Device Storage Estimate: ${megabytesToGigabytes(estimate.quota * 0.000001).toFixed(2)} GB`
 
-		((estimate.usage / estimate.quota) * 100).toFixed(2);
-});
+// 		((estimate.usage / estimate.quota) * 100).toFixed(2);
+// });
 
 if(navigator.deviceMemory === undefined){
 	deviceMemory.innerHTML = `Device Memory: Unsupported on your browser`;
