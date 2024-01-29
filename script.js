@@ -1,6 +1,6 @@
 const deviceStorage = document.getElementById("deviceStorage");
 const deviceMemory = document.getElementById("deviceMemory");
-const batteryLevel = document.getElementById("batteryLevel");
+const batteryLevel = document.querySelector("#batteryLevel");
 const resolution = document.getElementById("screenResolution");
 const networkConnectionType = document.getElementById("networkType");
 const deviceOS = document.getElementById("deviceOS");
@@ -20,9 +20,9 @@ getResolutionAsync().then((res) => {
 
 getBatteryLevelAsync().then((level) => {
 	if(level === "Unsupported on your browser"){
-			batteryLevel.innerHTML = `Battery Level: ${level}`;
+			batteryLevel.textContent = `Battery Level: ${level}`;
 	} else {
-			batteryLevel.innerHTML = `Battery Level: ${level}%`;
+			batteryLevel.textContent = `Battery Level: ${level}%`;
 	}
 }).catch((error) => {
 	console.error(error);
@@ -33,6 +33,20 @@ getBrowserAsync().then((browser) => {
 }).catch((error) => {
 	console.error(error)
 });
+
+navigator.getBattery().then((battery) => {
+	const isCharging = battery.charging;
+
+	if (!navigator.getBattery || navigator.getBattery === undefined){
+		document.querySelector("#batteryCharging").textContent = "Battery Status: Unupported on your browser";
+	}
+
+	if(isCharging === true){
+			document.querySelector("#batteryCharging").textContent = "Battery Status: Charging";
+	} else if (isCharging === false) {
+		document.querySelector("#batteryCharging").textContent = "Battery Status: Not Charging";
+	}
+})
 
 // navigator.storage.estimate().then((estimate) => {
 // 	console.log(estimate.quota);
@@ -54,13 +68,11 @@ if(navigator.deviceMemory === undefined){
 if (navigator.connection === undefined || !networkConnectionType) {
 	networkConnectionType.innerHTML = "Network Type: Unsupported on your browser"
 } else {
-	const networkType = navigator.connection.type
+	let networkType = navigator.connection.type
 	console.log(networkType);
-	if(networkType === "wifi"){
-		networkConnectionType.innerHTML = `Network Type: WiFi`
-	} else {
+
+	networkType = networkType.substring(0, 1).toUpperCase() + networkType.substring(1);
 		networkConnectionType.innerHTML = `Network Type: ${networkType}`
-	}
 }
 
 async function getBatteryLevelAsync() {
