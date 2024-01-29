@@ -7,8 +7,6 @@ const deviceOS = document.getElementById("deviceOS");
 const browserName = document.getElementById("browserName");
 const browserCookiedEnabled = document.getElementById("cookiedEnabled")
 
-
-
 let userAgent = navigator.userAgent;
 
 batteryLevel.innerHTML = `Battery Level: ${getBatteryLevel()}%`
@@ -39,7 +37,7 @@ if (navigator.connection === undefined || !networkConnectionType) {
 	}
 }
 
-async function getBatteryLevel() {
+function getBatteryLevel() {
 	if (!navigator.getBattery || navigator.getBattery === undefined) {
 		return "Unsupported on your browser";
 	} else {
@@ -76,7 +74,7 @@ function revealIpAddress() {
 }
 
 // navigator.cookiesEnabled is not accurate for all browsers, so we'll attempt to create a temporary cookie to see if cookies are enabled
-async function cookiesEnabled(){
+function cookiesEnabled(){
 	document.cookie = "testcookie=12345678";
 
 	if(document.cookie.indexOf("testcookie=12345678") >= 0){
@@ -86,12 +84,12 @@ async function cookiesEnabled(){
 	return false;
 }
 
-async function getResolution(){
+function getResolution(){
 	const screen = window.screen;
 	return `${screen.width}x${screen.height}`;
 }
 
-async function getBrowser(){
+function getBrowser(){
 	if(userAgent.indexOf("Chrome") >= 0){
 		if (userAgent.match(/\bChrome\/[.0-9]* Mobile\b/)) {
 				if (userAgent.match(/\bVersion\/\d+\.\d+\b/) || userAgent.match(/\bwv\b/)) {
@@ -167,7 +165,7 @@ async function getBrowser(){
 	return "Could not detect browser";
 }
 
-async function getOS(){
+function getOS(){
 	if (userAgent.indexOf("Windows") >= 0) {
 			if (userAgent.indexOf("Windows Phone") >= 0) {
 					return "Windows Phone";
