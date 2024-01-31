@@ -18,18 +18,6 @@ getResolutionAsync().then((res) => {
 }).catch((error) => {
 		console.error(error);
 });
-
-// getBatteryLevelAsync().then((level) => {
-// 	if(level === "Unsupported on your browser"){
-// 			batteryLevel.textContent = `Battery Level: ${level}`;
-// 	} else {
-// 			batteryLevel.textContent = `Battery Level: ${level}%`;
-// 	}
-// }).catch((error) => {
-// 	console.error(error);
-// });
-
-
 async function getBatteryLevelAsync() {
 	await navigator.getBattery().then((battery) => {
 
@@ -69,20 +57,6 @@ getBrowserAsync().then((browser) => {
 }).catch((error) => {
 	console.error(error)
 });
-
-// navigator.getBattery().then((battery) => {
-// 	const isCharging = battery.charging;
-
-// 	if (!navigator.getBattery || navigator.getBattery === undefined){
-// 		document.querySelector("#batteryCharging").textContent = "Battery Status: Unupported on your browser";
-// 	}
-
-// 	if(isCharging === true){
-// 			document.querySelector("#batteryCharging").textContent = "Battery Status: Charging";
-// 	} else if (isCharging === false) {
-// 		document.querySelector("#batteryCharging").textContent = "Battery Status: Not Charging";
-// 	}
-// })
 
 // navigator.storage.estimate().then((estimate) => {
 // 	console.log(estimate.quota);
