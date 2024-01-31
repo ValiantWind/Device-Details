@@ -149,6 +149,12 @@ function getResolutionAsync() {
 function getBrowserAsync(){
 	return new Promise((resolve, reject) => {
 		try {
+
+			if(userAgent.indexOf("Edge") >= 0){
+				resolve("Microsoft Edge")
+			}
+
+			
 		if(userAgent.indexOf("Chrome") >= 0){
 			if (userAgent.match(/\bChrome\/[.0-9]* Mobile\b/)) {
 					if (userAgent.match(/\bVersion\/\d+\.\d+\b/) || userAgent.match(/\bwv\b/)) {
@@ -159,10 +165,6 @@ function getBrowserAsync(){
 			} else {
 					resolve("Google Chrome");
 			}
-		}
-
-		if(userAgent.indexOf("Edge") >= 0){
-		resolve("Microsoft Edge")
 		}
 
 		if (userAgent.indexOf("Firefox") >= 0 && userAgent.indexOf("Seamonkey") === -1) {
