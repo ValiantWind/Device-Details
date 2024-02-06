@@ -14,17 +14,26 @@ let userAgent = navigator.userAgent;
 
 getOSAsync().then(os => {
 	deviceOS.textContent = `OS: ${os}`;
-});
+}).catch(error => {
+	deviceOS.textContent = `Platform: Error when fetching device OS.`;
+	console.error(error)
+})
 
 getPlatformAsync().then(platform => {
 	devicePlatform.textContent = `Platform: ${platform}`;
+}).catch(error => {
+	devicePlatform.textContent = `Platform: Error when fetching platform.`;
+	console.error(error)
 })
 
 getBrowserAsync().then((info) => {
+	let version = info.version;
 	browserName.textContent = `Browser: ${info.browser}`;
-	browserVersion.textContent = `Browser Version: ${info.version}`;
+	browserVersion.textContent = `Browser Version: ${version}`;
 }).catch((error) => {
-	console.error(error)
+	browserName.textContent = `Browser: Error when attempting to get browser name.`;
+	browserVersion.textContent = `Browser Version:  Error when attempting to get browser version.`;
+	console.error(error);
 });
 
 getResolutionAsync().then((res) => {
