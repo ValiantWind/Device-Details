@@ -84,7 +84,7 @@ if (navigator.connection === undefined || !networkConnectionType) {
 }
 
 async function displayBatteryLevelAsync() {
-	if (!navigator.getBattery() || (navigator.getBattery() === undefined) || navigator.getBattery === undefined) {
+	if (!navigator.getBattery) {
 		batteryStatus.innerHTML = "<strong>Battery Status: </strong>Unsupported on your browser";
 		batteryLevel.innerHTML = "<strong>Battery Level: </strong>Unsupported on your browser";
 		return;
