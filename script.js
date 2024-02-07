@@ -13,22 +13,25 @@ let batteryStatus = document.querySelector("#batteryCharging");
 let userAgent = navigator.userAgent;
 
 getOSAsync().then(os => {
-	deviceOS.innerHTML = `<strong>Operation System: </strong> ${os || "Error when attempting to fetch device operating system. Please reload or try again later."}`;
+	deviceOS.innerHTML = `<strong>Operating System: </strong> ${os || "Error when attempting to fetch device operating system. Please reload or try again later."}`;
+	console.warn(os)
 }).catch(error => {
-	deviceOS.innerHTML = `<strong>Operation System: </strong> Error when attempting to fetch device operating system. Please reload or try again later.`;
+	deviceOS.innerHTML = `<strong>Operating System: </strong> Error when attempting to fetch device operating system. Please reload or try again later.`;
 	console.error(error)
 })
 
 getPlatformAsync().then(platform => {
 	devicePlatform.innerHTML = `<strong>Platform: </strong> ${platform || "Error when attempting to fetch device platform. Please reload or try again later."}`;
+	console.warn(platform);
 }).catch(error => {
 	devicePlatform.innerHTML = `<strong>Platform: </strong> Error when attempting to fetch device platform. Please reload or try again later.`;
-	console.error(error)
+	console.warn(error)
 })
 
 getBrowserAsync().then((info) => {
 	browserName.innerHTML = `<strong>Browser Name: </strong>${info.browser || "Error when attempting to fetch browser info. Please reload or try again later."}`;
 	browserVersion.innerHTML = `<strong>Browser Version: </strong>${info.version || "Error when attempting to fetch browser info. Please reload or try again later."}`;
+	console.warn(info)
 }).catch((error) => {
 	browserName.innerHTML = `<strong>Browser Name: </strong>Error when attempting to fetch browser info. Please reload or try again later.`;
 	browserVersion.innerHTML = `<strong>Browser Version: </strong>Error when attempting to fetch browser info. Please reload or try again later.`;
@@ -37,6 +40,7 @@ getBrowserAsync().then((info) => {
 
 getResolutionAsync().then((res) => {
 	resolution.innerHTML = `<strong>Resolution: </strong>${res || "Error when attempting to fetch browser. Please reload or try again later."}`;
+	console.warn(res)
 }).catch((error) => {
 	console.error(error);
 });
