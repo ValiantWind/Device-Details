@@ -13,31 +13,30 @@ let batteryStatus = document.querySelector("#batteryCharging");
 let userAgent = navigator.userAgent;
 
 getOSAsync().then(os => {
-	deviceOS.textContent = `OS: ${os}`;
+	deviceOS.innerHTML = `<strong>Operation System: </strong> ${os || "Error when attempting to fetch device operating system. Please reload or try again later."}`;
 }).catch(error => {
-	deviceOS.textContent = `Platform: Error when fetching device OS.`;
+	deviceOS.innerHTML = `<strong>Operation System: </strong> Error when attempting to fetch device operating system. Please reload or try again later.`;
 	console.error(error)
 })
 
 getPlatformAsync().then(platform => {
-	devicePlatform.textContent = `Platform: ${platform}`;
+	devicePlatform.innerHTML = `<strong>Platform: </strong> ${platform || "Error when attempting to fetch device platform. Please reload or try again later."}`;
 }).catch(error => {
-	devicePlatform.textContent = `Platform: Error when fetching platform.`;
+	devicePlatform.innerHTML = `<strong>Platform: </strong> Error when attempting to fetch device platform. Please reload or try again later.`;
 	console.error(error)
 })
 
 getBrowserAsync().then((info) => {
-	let version = info.version;
-	browserName.textContent = `Browser: ${info.browser}`;
-	browserVersion.textContent = `Browser Version: ${version}`;
+	browserName.innerHTML = `<strong>Browser Name: </strong>${info.browser || "Error when attempting to fetch browser info. Please reload or try again later."}`;
+	browserVersion.innerHTML = `<strong>Browser Version: </strong>${info.version || "Error when attempting to fetch browser info. Please reload or try again later."}`;
 }).catch((error) => {
-	browserName.textContent = `Browser: Error when attempting to get browser name.`;
-	browserVersion.textContent = `Browser Version:  Error when attempting to get browser version.`;
+	browserName.innerHTML = `<strong>Browser Name: </strong>Error when attempting to fetch browser info. Please reload or try again later.`;
+	browserVersion.innerHTML = `<strong>Browser Version: </strong>Error when attempting to fetch browser info. Please reload or try again later.`;
 	console.error(error);
 });
 
 getResolutionAsync().then((res) => {
-	resolution.textContent = `Resolution: ${res}`;
+	resolution.innerHTML = `<strong>Resolution: </strong>${res || "Error when attempting to fetch browser. Please reload or try again later."}`;
 }).catch((error) => {
 	console.error(error);
 });
@@ -49,67 +48,72 @@ getIpAddressAsync().then(ip => {
 
 		revealIpAddress.addEventListener("click", function() {
 			revealIpAddress.parentNode.removeChild(revealIpAddress);
-			document.getElementById("ipAddress").textContent = `IP Address: ${ip}`;
+			document.getElementById("ipAddress").innerHTML = `<strong>IP Address: </strong>${ip || "Could not fetch IP Address. Please reload or try again later."}`;
 		})
 	}
 }).catch(e => {
 	console.error(e)
-	document.getElementById("ipAddress").textContent = `IP Address: Could not fetch IP Address.`
+	document.getElementById("ipAddress").innerHTML = `<strong>IP Address: </strong>Could not fetch IP Address. Please reload or try again later.`
 })
 
 displayBatteryLevelAsync()
 
 
-browserCookiedEnabled.textContent = `Browser Cookies Enabled: ${cookiesEnabled()}`;
+browserCookiedEnabled.innerHTML = `<strong>Browser Cookies Enabled: </strong>${cookiesEnabled()}`;
 
 
 if (navigator.deviceMemory === undefined) {
-	deviceMemory.textContent = `Device Memory: Unsupported on your browser`;
+	deviceMemory.innerHTML = `<strong>Device Memory: </strong>Unsupported on your browser.`;
 } else {
-	deviceMemory.textContent = `Device Memory: At least ${navigator.deviceMemory} GiB of RAM`;
+	deviceMemory.innerHTML = `<strong>Device Memory: </strong>At least ${navigator.deviceMemory} GiB of RAM`;
 }
 
 
 if (navigator.connection === undefined || !networkConnectionType) {
-	networkConnectionType.textContent = "Network Type: Unsupported on your browser"
+	networkConnectionType.innerHTML = "<strong>Network Type: </strong>Unsupported on your browser."
 } else {
 	let networkType = navigator.connection.type
-	console.log(networkType);
 
 	networkType = networkType.substring(0, 1).toUpperCase() + networkType.substring(1);
-	networkConnectionType.textContent = `Network Type: ${networkType}`
+
+	if (networkType === "Wifi") {
+		networkType = "WiFi";
+	}
+	console.log(networkType)
+	networkConnectionType.innerHTML = `<strong>Network Type: </strong>${networkType}`
 }
 
 async function displayBatteryLevelAsync() {
 	if (!navigator.getBattery() || (navigator.getBattery() === undefined) || navigator.getBattery === undefined) {
-		batteryStatus.textContent = "Battery Status: Unsupported on your browser";
-		batteryLevel.textContent = "Battery Level: Unsupported on your browser";
+		batteryStatus.innerHTML = "<strong>Battery Status: </strong>Unsupported on your browser";
+		batteryLevel.innerHTML = "<strong>Battery Level: </strong>Unsupported on your browser";
 		return;
 	} else {
 		await navigator.getBattery().then((battery) => {
 
-			batteryLevel.textContent = `Battery Level: ${battery.level * 100}%`;
+			batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
 
 			if (battery.charging) {
-				batteryStatus.textContent = `Battery Status: Charging`;
+				batteryStatus.innerHTML = `<strong>Battery Status: </strong>Charging`;
 			} else {
-				batteryStatus.textContent =
-					`Battery Status: Not Charging`;
+				batteryStatus.innerHTML =
+					`<strong>Battery Status: </strong>Not Charging`;
 			}
-		},
-
 			battery.onlevelchange = () => {
-				batteryLevel.textContent = `Battery Level: ${battery.level * 100}%`;
+				batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
 
 				if (battery.charging) {
-					batteryStatus.textContent = `Battery Status: Charging`;
+					batteryStatus.innerHTML = `<strong>Battery Status: </strong> Charging`;
 				} else {
-					batteryStatus.textContent =
-						`Battery Status: Not Charging`;
+					batteryStatus.innerHTML =
+						`<strong>Battery Status: </strong>Not Charging`;
 				}
-			}).catch((error) => {
-				console.log(error)
-			});
+			}
+
+		}).catch((error) => {
+			console.log(error)
+		});
+
 	}
 
 }
@@ -162,17 +166,19 @@ async function getResolutionAsync() {
 // The code used to be much longer when I used a client-sided solution for detecting device info.
 
 async function getSystemInfoAsync() {
-	try {
-		const response = await fetch(`https://api.valiantwind.dev/v1/system-info`)
-		return await response.json()
-	} catch (e) {
-		console.error(e)
-	}
+	return new Promise((resolve, reject) => {
+		axios.get(`https://api.valiantwind.dev/v1/system-info`)
+			.then(response => resolve(response.data))
+			.catch(error => {
+				reject(error)
+			})
+	})
 }
 
 
 async function getBrowserAsync() {
 	return new Promise((resolve, reject) => {
+
 		try {
 			getSystemInfoAsync().then(info => {
 				const browser = info.browser;
@@ -183,7 +189,6 @@ async function getBrowserAsync() {
 			reject(e)
 		}
 	})
-
 }
 
 async function getOSAsync() {

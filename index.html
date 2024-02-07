@@ -1,51 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-	
-  <head>
-    <meta charset="UTF-8" />
-		<meta name="description" content="Your Device Details (NOT STORED)">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="keywords" content="HTML, CSS, JavaScript">
-		<meta name="author" content="ValiantWind">
-    <title>Device Details</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-	
-  <body>
-    <div class="main">		
-      <h1>Your Device Details</h1>
-			<a href="https://github.com/ValiantWind/Device-Details"><h2 align="center">Open-source</h2></a>
-			<h3 align="center">The Details below are not guaranteed to be accurate.</h3>
-			<p>Some of these details are obvious. I just included them for the sake of it. If some spaces on the website are empty, it means that the details failed to load. Try reloading if this happens or create an issue on GitHub Repository if the issue persists.</p>
-			<br>
 
-		<h4 align="center" id="deviceOS"></h4>
-			<h4 align="center" id="devicePlatform"></h4>
-		<h4 align="center" id="browserName"></h4>
-			<h4 align="center" id="browserVersion"></h4>
-			
-		<h4 align="center" id="screenResolution"></h4>
-		<h4 align="center" id="cookiedEnabled"></h4>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="description" content="Your Device Details (NOT STORED)">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="keywords" content="HTML, CSS, JavaScript">
+	<meta name="author" content="ValiantWind">
+	<title>Device Details</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+	<div class="main">
+		<h1 align="center">Your Device Details</h1>
+		<a href="https://github.com/ValiantWind/Device-Details">
+			<h2 align="center">Open-source</h2>
+		</a>
+		<h3 align="center">The Details below are not guaranteed to be accurate. If some fields appear to be empty initially, reload the page.</h3>
+		<br>
+
+		<h4 class="divider" align="center" id="deviceOS"><strong>Operating System: </strong>Error when attempting to fetch device operating system. Please reload or try again later.</h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="devicePlatform"><strong>Platform: </strong>Error when attempting to fetch platform. Please reload or try again later.</h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="browserName"><strong>Browser Name: </strong>Error when attempting to fetch platform. Please reload or try again later.</h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="browserVersion"><strong>Browser Version: </strong>Error when attempting to fetch platform. Please reload or try again later.</h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="screenResolution"></h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="cookiedEnabled"></h4>
+		<hr class="divider">
 		<!-- <h4 align="center" id="deviceStorage"></h4> -->
-		<h4 align="center" id="deviceMemory"></h4>
-    <h4 align="center" id="batteryLevel"></h4>
-		<h4 align="center" id="batteryCharging"></h4>
-		<h4 align="center" id="networkType"></h4>
-    <h4 align="center" id="ipAddress">IP Address: <button type="button" id="showIpAddress">Click to reveal</button></h4>
-			
-			<br>
-			<br>
+		<h4 class="divider" align="center" id="deviceMemory"></h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="batteryLevel"><strong> Battery Level: </strong>Unsupported on your browser browser.</h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="batteryCharging"><strong>Battery Status: </strong>Unsupported on your browser.</h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="networkType"><strong>Network Type: </strong>Unsupported on your browser.</h4>
+		<hr class="divider">
+		<h4 class="divider" align="center" id="ipAddress"><strong> IP Address: </strong><button type="button" id="showIpAddress">Click to reveal</button></h4>
+		<br>
+		<br>
 
-			<button font-size="1.5 rem" align="center" type="button" id="locationDetails" onclick="locationDetails()">
+		<button font-size="1.5 rem" align="center" type="button" id="locationDetails" onclick="locationDetails()">
 			View Your Location Details
 		</button>
-			
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
-		<!-- Obviously needed for this to work at all -->
-		<script src="script.js"></script>
-		<script src="ripple.js"></script>
-		
-  </body>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+
+	<script src="script.js"></script>
+	<script src="ripple.js"></script>
+
+</body>
+
 </html>

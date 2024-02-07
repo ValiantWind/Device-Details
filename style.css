@@ -81,6 +81,13 @@ p{
     font-weight: 300;
 }
 
+hr.divider {
+	border: 2px solid #3d3d3d;
+	border-color: #3d3d3d;
+	width: 50%;
+	margin: 0 auto;
+	padding: 0;
+}
 
 button {
   position: relative;
