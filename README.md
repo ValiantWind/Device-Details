@@ -8,5 +8,5 @@ This website is not necessesarily meant to have strong use cases. I am just expl
 
 ## I do NOT store your Device Details. They are only shown
 
-If you want proof of this, see my [API Repository](https://github.com/ValiantWind/api) for the source code of the endpoints used for the website.
+I previously made the repository for my  API open source as proof, but due to certain concerns that arose, I decided to private the repository.
 
