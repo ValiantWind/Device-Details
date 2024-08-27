@@ -10,8 +10,6 @@ const browserCookiedEnabled = document.getElementById("cookiedEnabled");
 let batteryLevel = document.querySelector("#batteryLevel");
 let batteryStatus = document.querySelector("#batteryCharging");
 
-let userAgent = navigator.userAgent;
-
 getOSAsync().then(os => {
 	deviceOS.innerHTML = `<strong>Operating System: </strong> ${os || "Error when attempting to fetch device operating system. Please reload or try again later."}`;
 	console.warn(os)
@@ -97,21 +95,25 @@ async function displayBatteryLevelAsync() {
 
 			batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
 
+
+
 			if (battery.charging) {
 				batteryStatus.innerHTML = `<strong>Battery Status: </strong>Charging`;
 			} else {
 				batteryStatus.innerHTML =
 					`<strong>Battery Status: </strong>Not Charging`;
 			}
-			battery.onlevelchange = () => {
-				batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
 
+			battery.chargingchange = () => {
 				if (battery.charging) {
-					batteryStatus.innerHTML = `<strong>Battery Status: </strong> Charging`;
+					batteryStatus.innerHTML = `<strong>Battery Status: </strong>Charging`;
 				} else {
 					batteryStatus.innerHTML =
 						`<strong>Battery Status: </strong>Not Charging`;
 				}
+			}
+			battery.onlevelchange = () => {
+				batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
 			}
 
 		}).catch((error) => {
