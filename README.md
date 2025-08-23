@@ -8,5 +8,5 @@ This website is not necessesarily meant to have strong use cases. I am just expl
 
 ## I do NOT store your Device Details. They are only shown
 
-I previously made the repository for my  API open source as proof, but due to certain concerns that arose, I decided to private the repository.
+I previously made the repository for my API open source as proof, but due to certain concerns that arose (in other words, my paranoia), I decided to private the repository.
 
