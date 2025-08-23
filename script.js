@@ -5,12 +5,9 @@ const networkConnectionType = document.getElementById("networkType");
 const deviceOS = document.getElementById("deviceOS");
 const browserName = document.getElementById("browserName");
 const browserVersion = document.getElementById("browserVersion");
-const devicePlatform = document.getElementById("devicePlatform");
 const browserCookiedEnabled = document.getElementById("cookiedEnabled");
 let batteryLevel = document.querySelector("#batteryLevel");
 let batteryStatus = document.querySelector("#batteryCharging");
-
-let userAgent = navigator.userAgent;
 
 getOSAsync().then(os => {
 	deviceOS.innerHTML = `<strong>Operating System: </strong> ${os || "Error when attempting to fetch device operating system. Please reload or try again later."}`;
@@ -18,14 +15,6 @@ getOSAsync().then(os => {
 }).catch(error => {
 	deviceOS.innerHTML = `<strong>Operating System: </strong> Error when attempting to fetch device operating system. Please reload or try again later.`;
 	console.error(error)
-})
-
-getPlatformAsync().then(platform => {
-	devicePlatform.innerHTML = `<strong>Platform: </strong> ${platform || "Error when attempting to fetch device platform. Please reload or try again later."}`;
-	console.warn(platform);
-}).catch(error => {
-	devicePlatform.innerHTML = `<strong>Platform: </strong> Error when attempting to fetch device platform. Please reload or try again later.`;
-	console.warn(error)
 })
 
 getBrowserAsync().then((info) => {
@@ -65,7 +54,6 @@ displayBatteryLevelAsync()
 
 browserCookiedEnabled.innerHTML = `<strong>Browser Cookies Enabled: </strong>${cookiesEnabled()}`;
 
-
 if (navigator.deviceMemory === undefined) {
 	deviceMemory.innerHTML = `<strong>Device Memory: </strong>Unsupported on your browser.`;
 } else {
@@ -97,21 +85,25 @@ async function displayBatteryLevelAsync() {
 
 			batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
 
+			
+
 			if (battery.charging) {
 				batteryStatus.innerHTML = `<strong>Battery Status: </strong>Charging`;
 			} else {
 				batteryStatus.innerHTML =
 					`<strong>Battery Status: </strong>Not Charging`;
 			}
-			battery.onlevelchange = () => {
-				batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
 
+			battery.chargingchange = () => {
 				if (battery.charging) {
-					batteryStatus.innerHTML = `<strong>Battery Status: </strong> Charging`;
+					batteryStatus.innerHTML = `<strong>Battery Status: </strong>Charging`;
 				} else {
 					batteryStatus.innerHTML =
 						`<strong>Battery Status: </strong>Not Charging`;
 				}
+			}
+			battery.onlevelchange = () => {
+				batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
 			}
 
 		}).catch((error) => {
@@ -185,8 +177,8 @@ async function getBrowserAsync() {
 
 		try {
 			getSystemInfoAsync().then(info => {
-				const browser = info.browser;
-				const version = info.version;
+				const browser = info.family;
+				const version = `${info.major}.${info.minor}.${info.patch}`
 				resolve({ browser, version })
 			})
 		} catch (e) {
@@ -199,25 +191,7 @@ async function getOSAsync() {
 	return new Promise((resolve, reject) => {
 		try {
 			getSystemInfoAsync().then(info => {
-				if (info.isiPhone) {
-					resolve("iOS")
-				} else if (info.isiPad) {
-					resolve("iPadOS")
-				} else {
-					resolve(info.os)
-				}
-			})
-		} catch (e) {
-			reject(e)
-		}
-	})
-}
-
-async function getPlatformAsync() {
-	return new Promise((resolve, reject) => {
-		try {
-			getSystemInfoAsync().then(info => {
-				resolve(info.platform)
+				resolve(info.os.family);
 			})
 		} catch (e) {
 			reject(e)
