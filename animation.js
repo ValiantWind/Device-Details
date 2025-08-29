@@ -25,6 +25,8 @@ for (const button of buttons) {
 	button.addEventListener("click", createRipple);
 }
 
+const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
 document.querySelectorAll('.collapsible-section').forEach(details => {
     const summary = details.querySelector('.section-header');
     const content = details.querySelector('.details-grid');
@@ -32,12 +34,17 @@ document.querySelectorAll('.collapsible-section').forEach(details => {
     summary.addEventListener('click', (event) => {
         event.preventDefault();
 
+        if (motionQuery.matches) {
+            details.toggleAttribute('open');
+            return;
+        }
+
         if (details.open) {
             const closingAnimation = content.animate({
                 height: [`${content.offsetHeight}px`, '0px']
             }, {
-                duration: 300,
-                easing: 'ease-out'
+                duration: 150,
+                easing: 'cubic-bezier(0.83, 0, 0.17, 1)'
             });
 
             closingAnimation.onfinish = () => {
@@ -50,8 +57,8 @@ document.querySelectorAll('.collapsible-section').forEach(details => {
             const openingAnimation = content.animate({
                 height: ['0px', `${content.offsetHeight}px`]
             }, {
-                duration: 300,
-                easing: 'ease-in-out'
+                duration: 150,
+                easing: 'cubic-bezier(0.83, 0, 0.17, 1)'
             });
         }
     });
