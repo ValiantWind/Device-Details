@@ -1,210 +1,223 @@
-const deviceStorage = document.getElementById("deviceStorage");
-const deviceMemory = document.getElementById("deviceMemory");
-const resolution = document.getElementById("screenResolution");
-const networkConnectionType = document.getElementById("networkType");
-const deviceOS = document.getElementById("deviceOS");
-const browserName = document.getElementById("browserName");
-const browserVersion = document.getElementById("browserVersion");
-const browserCookiedEnabled = document.getElementById("cookiedEnabled");
-let batteryLevel = document.querySelector("#batteryLevel");
-let batteryStatus = document.querySelector("#batteryCharging");
-
-getOSAsync().then(os => {
-	deviceOS.innerHTML = `<strong>Operating System: </strong> ${os || "Error when attempting to fetch device operating system. Please reload or try again later."}`;
-	console.warn(os)
-}).catch(error => {
-	deviceOS.innerHTML = `<strong>Operating System: </strong> Error when attempting to fetch device operating system. Please reload or try again later.`;
-	console.error(error)
-})
-
-getBrowserAsync().then((info) => {
-	browserName.innerHTML = `<strong>Browser Name: </strong>${info.browser || "Error when attempting to fetch browser info. Please reload or try again later."}`;
-	browserVersion.innerHTML = `<strong>Browser Version: </strong>${info.version || "Error when attempting to fetch browser info. Please reload or try again later."}`;
-	console.warn(info)
-}).catch((error) => {
-	browserName.innerHTML = `<strong>Browser Name: </strong>Error when attempting to fetch browser info. Please reload or try again later.`;
-	browserVersion.innerHTML = `<strong>Browser Version: </strong>Error when attempting to fetch browser info. Please reload or try again later.`;
-	console.error(error);
+document.addEventListener('DOMContentLoaded', () => {
+    initialize();
 });
 
-getResolutionAsync().then((res) => {
-	resolution.innerHTML = `<strong>Resolution: </strong>${res || "Error when attempting to fetch browser. Please reload or try again later."}`;
-	console.warn(res)
-}).catch((error) => {
-	console.error(error);
-});
-
-getIpAddressAsync().then(ip => {
-	if (document.getElementById("showIpAddress")) {
-
-		const revealIpAddress = document.getElementById("showIpAddress");
-
-		revealIpAddress.addEventListener("click", function() {
-			revealIpAddress.parentNode.removeChild(revealIpAddress);
-			document.getElementById("ipAddress").innerHTML = `<strong>IP Address: </strong>${ip || "Could not fetch IP Address. Please reload or try again later."}`;
-		})
-	}
-}).catch(e => {
-	console.error(e)
-	document.getElementById("ipAddress").innerHTML = `<strong>IP Address: </strong>Could not fetch IP Address. Please reload or try again later.`
-})
-
-displayBatteryLevelAsync()
-
-
-browserCookiedEnabled.innerHTML = `<strong>Browser Cookies Enabled: </strong>${cookiesEnabled()}`;
-
-if (navigator.deviceMemory === undefined) {
-	deviceMemory.innerHTML = `<strong>Device Memory: </strong>Unsupported on your browser.`;
-} else {
-	deviceMemory.innerHTML = `<strong>Device Memory: </strong>At least ${navigator.deviceMemory} GiB of RAM`;
+function initialize(){
+   try {
+        updateOS();
+    } catch (e) {
+        console.error("Error initializing OS info:", e);
+    }
+    try {
+        updateBrowserInfo();
+    } catch (e) {
+        console.error("Error initializing Browser info:", e);
+    }
+    try {
+        updateResolution();
+    } catch (e) {
+        console.error("Error initializing Resolution info:", e);
+    }
+    try {
+        updateTimezone();
+    } catch (e) {
+        console.error("Error initializing Timezone info:", e);
+    }
+    try {
+        setupIpButton();
+    } catch (e) {
+        console.error("Error initializing IP Address button:", e);
+    }
+    try {
+        updateBatteryInfo();
+    } catch (e) {
+        console.error("Error initializing Battery info:", e);
+    }
+    try {
+        updateCookieStatus();
+    } catch (e) {
+        console.error("Error initializing Cookie status:", e);
+    }
+    try {
+        updateDeviceMemory();
+    } catch (e) {
+        console.error("Error initializing Device Memory info:", e);
+    }
+    try {
+        setupLocationButton();
+    } catch (e) {
+        console.error("Error initializing Location button:", e);
+    }
 }
 
+function updateOS(){
+    const deviceOS = document.getElementById("deviceOS");
+    if(!deviceOS) return;
 
-if (navigator.connection === undefined || !networkConnectionType) {
-	networkConnectionType.innerHTML = "<strong>Network Type: </strong>Unsupported on your browser."
-} else {
-	let networkType = navigator.connection.type
-
-	networkType = networkType.substring(0, 1).toUpperCase() + networkType.substring(1);
-
-	if (networkType === "Wifi") {
-		networkType = "WiFi";
-	}
-	console.log(networkType)
-	networkConnectionType.innerHTML = `<strong>Network Type: </strong>${networkType}`
+    getOSAsync().then(os => {
+        deviceOS.textContent = os || "Error";
+    })
+    .catch(e => {
+        deviceOS.textContent = "Error";
+        console.error(e)
+    })
 }
 
-async function displayBatteryLevelAsync() {
-	if (!navigator.getBattery) {
-		batteryStatus.innerHTML = "<strong>Battery Status: </strong>Unsupported on your browser";
-		batteryLevel.innerHTML = "<strong>Battery Level: </strong>Unsupported on your browser";
-		return;
-	} else {
-		await navigator.getBattery().then((battery) => {
+function updateBrowserInfo(){
+    const name = document.getElementById("browserName");
+    const version = document.getElementById("browserVersion");
+    if(!name || !version) return;
 
-			batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
+    getBrowserAsync().then(info => {
+        browserName.textContent = info.browser || "Error";
+        browserVersion.textContent = info.version || "Error";
+    })
+    .catch(e => {
+        browserName.textContent = "Error";
+        browserVersion.textContent = "Error";
+        console.error(error);
+    })
+}
 
-			
+function updateResolution() {
+    const resolution = document.getElementById("screenResolution");
+    if (!resolution) return;
 
-			if (battery.charging) {
-				batteryStatus.innerHTML = `<strong>Battery Status: </strong>Charging`;
-			} else {
-				batteryStatus.innerHTML =
-					`<strong>Battery Status: </strong>Not Charging`;
-			}
+    getResolutionAsync()
+        .then(res => {
+            resolution.textContent = res || "Error";
+        })
+        .catch(error => {
+            resolution.textContent = "Error";
+            console.error(error);
+        });
+}
 
-			battery.chargingchange = () => {
-				if (battery.charging) {
-					batteryStatus.innerHTML = `<strong>Battery Status: </strong>Charging`;
-				} else {
-					batteryStatus.innerHTML =
-						`<strong>Battery Status: </strong>Not Charging`;
-				}
-			}
-			battery.onlevelchange = () => {
-				batteryLevel.innerHTML = `<strong>Battery Level: </strong>${battery.level * 100}%`;
-			}
+function updateTimezone() {
+    const timezone = document.getElementById("preferredTimezone");
+    if (!timezone) return;
+    timezone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || "N/A";
+}
 
-		}).catch((error) => {
-			console.log(error)
-		});
+function setupIpButton() {
+    const ipAddress = document.getElementById("ipAddress");
+    if (!ipAddress) return;
 
-	}
+    ipAddress.addEventListener("click", function(event) {
+        if (event.target.id === "showIpAddress") {
+            getIpAddressAsync()
+                .then(ip => {
+                    ipAddress.innerHTML = ip || "Could not fetch IP Address.";
+                })
+                .catch(e => {
+                    console.error(e);
+                    ipAddress.innerHTML = "Could not fetch IP Address.";
+                });
+        }
+    });
+}
 
+async function updateBatteryInfo() {
+    const batteryLevel = document.getElementById("batteryLevel");
+    const batteryStatus = document.getElementById("batteryCharging");
+    if (!batteryLevel || !batteryStatus) return;
+
+    if(navigator.brave && await navigator.brave.isBrave()) {
+        batteryStatus.textContent = "Protected";
+        batteryLevel.textContent = "Protected";
+        return;
+    }
+
+    if (!navigator.getBattery) {
+        batteryStatus.textContent = "Unsupported";
+        batteryLevel.textContent = "Unsupported";
+        return;
+    }
+
+    try {
+        const battery = await navigator.getBattery();
+        batteryLevel.textContent = `${battery.level * 100}%`;
+        batteryStatus.textContent = battery.charging ? "Charging" : "Not Charging";
+
+        battery.onchargingchange = () => {
+            batteryStatus.textContent = battery.charging ? "Charging" : "Not Charging";
+        };
+        battery.onlevelchange = () => {
+            batteryLevel.textContent = `${battery.level * 100}%`;
+        };
+    } catch (error) {
+        console.error(error);
+        batteryStatus.textContent = "Error";
+        batteryLevel.textContent = "Error";
+    }
+}
+
+function updateCookieStatus() {
+    const cookiesEnabledElement = document.getElementById("cookiesEnabled");
+    if (!cookiesEnabledElement) return;
+
+    document.cookie = "testcookie=1";
+    const enabled = document.cookie.indexOf("testcookie") !== -1;
+    document.cookie = "testcookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    cookiesEnabledElement.textContent = enabled ? "Enabled" : "Disabled";
+}
+
+function updateDeviceMemory() {
+    const deviceMemory = document.getElementById("deviceMemory");
+    if (!deviceMemory) return;
+
+    if (navigator.deviceMemory === undefined) {
+        deviceMemory.textContent = "Unsupported";
+    } else {
+        deviceMemory.textContent = `At least ${navigator.deviceMemory} GiB of RAM`;
+    }
+}
+
+function setupLocationButton() {
+    const locationDetailsBtn = document.getElementById("locationDetails");
+    if (!locationDetailsBtn) return;
+    locationDetailsBtn.addEventListener("click", () => {
+        window.location.href = "https://ValiantWind.github.io/Location-Details";
+    });
 }
 
 
 async function getIpAddressAsync() {
-	return new Promise((resolve, reject) => {
-		try {
-			axios.get(`https://api.valiantwind.dev/v1/get-ip-address`).then((response) => {
-				resolve(response.data)
-			}).catch((error) => {
-				console.log(error)
-				console.log(response.data)
-				reject(error)
-			})
-		} catch (e) {
-			reject(e)
-		}
-	})
-}
-
-// navigator.cookiesEnabled is not accurate for all browsers, so we'll attempt to create a temporary cookie to see if cookies are enabled
-function cookiesEnabled() {
-	document.cookie = "testcookie=12345678";
-
-	if (document.cookie.indexOf("testcookie=12345678") >= 0) {
-		return true;
-	}
-
-	document.cookie = "cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT";
-
-	return false;
+    try {
+        const response = await axios.get(`https://api.valiantwind.dev/v1/get-ip-address`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 }
 
 async function getResolutionAsync() {
-	return new Promise((resolve, reject) => {
-		try {
-			const screen = window.screen;
-			const resolution = `${screen.width}x${screen.height}`;
-			resolve(resolution);
-		} catch (error) {
-			reject(error);
-		}
-	});
+    return `${window.screen.width}x${window.screen.height}`;
 }
-
-
-// Server-sided solution using my API. You can only detect so much when on the client. 
-// Its definitely possible to detect the browser on the client, but utilizing the server-sided solution is more reliable and accurate.
-// The code used to be much longer when I used a client-sided solution for detecting device info.
 
 async function getSystemInfoAsync() {
-	return new Promise((resolve, reject) => {
-		axios.get(`https://api.valiantwind.dev/v1/system-info`)
-			.then(response => resolve(response.data))
-			.catch(error => {
-				reject(error)
-			})
-	})
+    try {
+        const response = await axios.get(`https://api.valiantwind.dev/v1/system-info`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 }
 
-
 async function getBrowserAsync() {
-	return new Promise((resolve, reject) => {
-
-		try {
-			getSystemInfoAsync().then(info => {
-				const browser = info.family;
-				const version = `${info.major}.${info.minor}.${info.patch}`
-				resolve({ browser, version })
-			})
-		} catch (e) {
-			reject(e)
-		}
-	})
+    const info = await getSystemInfoAsync();
+    if (info) {
+        return {
+            browser: info.family,
+            version: `${info.major}.${info.minor}.${info.patch}`
+        };
+    }
+    return {};
 }
 
 async function getOSAsync() {
-	return new Promise((resolve, reject) => {
-		try {
-			getSystemInfoAsync().then(info => {
-				resolve(info.os.family);
-			})
-		} catch (e) {
-			reject(e)
-		}
-	})
-}
-
-function megabytesToGigabytes(megabytes) {
-	return megabytes / 1024;
-}
-
-function locationDetails() {
-	if (document.getElementById("locationDetails")) {
-		window.location.href = "https://ValiantWind.github.io/Location-Details"
-	}
+    const info = await getSystemInfoAsync();
+    return info ? info.os.family : null;
 }

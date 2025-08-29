@@ -12,50 +12,87 @@
 </head>
 
 <body>
-	<div class="main">
-		<h1 align="center">Your Device Details</h1>
-		<a href="https://github.com/ValiantWind/Device-Details">
-			<h2 align="center">Open-source</h2>
-		</a>
-		<h3 align="center">The Details below are not guaranteed to be accurate. If some fields appear to be empty initially, reload the page. Try switching to a Chromium-based browser (like Google Chrome or Microsoft Edge) if certain fields are unsupported on your browser.</h3>
-		<br>
+	<main class="container">
+		<header class="header">
+			<h1>Your Device Details</h1>
+			<p>The details below are not guaranteed to be accurate. Some information may only be available on certain browsers.</p>
+		</header>
 
-		<h4 class="divider" align="center" id="deviceOS"><strong>Operating System: </strong>Error when attempting to fetch device operating system. Please reload or try again later.</h4>
-		<hr class="divider">
-		<h4 class="divider" align="center" id="browserName"><strong>Browser Name: </strong>Error when attempting to fetch browser info. Please reload or try again later.</h4>
-		<hr class="divider">
-		<h4 class="divider" align="center" id="browserVersion"><strong>Browser Version: </strong>Error when attempting to fetch browser info. Please reload or try again later.</h4>
-		<hr class="divider">
-		<h4 class="divider" align="center" id="screenResolution"></h4>
-		<hr class="divider">
-		<h4 class="divider" align="center" id="cookiedEnabled"></h4>
-		<hr class="divider">
-		<!-- <h4 align="center" id="deviceStorage"></h4> -->
-		<h4 class="divider" align="center" id="deviceMemory"></h4>
-		<hr class="divider">
-		<h4 class="divider" align="center" id="batteryLevel"><strong> Battery Level: </strong>Unsupported on your browser.</h4>
-		<hr class="divider">
-		<h4 class="divider" align="center" id="batteryCharging"><strong>Battery Status: </strong>Unsupported on your browser.</h4>
-		<hr class="divider">
-		<h4 class="divider" align="center" id="networkType"><strong>Network Type: </strong>Unsupported on your browser.</h4>
-		<hr class="divider">
-		<h4 class="divider" align="center" id="networkType"><strong>Network Type: </strong>Unsupported on your browser.</h4>
+		<details class="collapsible-section" open>
+			<summary class="section-header">
+				<h2>General Details</h2>
+			</summary>
+			<section class="details-grid">
+				<div class="card">
+					<h2>Operating System</h2>
+					<p id="deviceOS">Loading...</p>
+				</div>
+				<div class="card">
+					<h2>Browser Name</h2>
+					<p id="browserName">Loading...</p>
+				</div>
+				<div class="card">
+					<h2>Browser Version</h2>
+					<p id="browserVersion">Loading...</p>
+				</div>
+				<div class="card">
+					<h2>Screen Resolution</h2>
+					<p id="screenResolution">Loading...</p>
+				</div>
+				<div class="card">
+					<h2>Cookies Enabled</h2>
+					<p id="cookiesEnabled">Loading...</p>
+				</div>
+				<div class="card">
+					<h2>IP Address</h2>
+					<p id="ipAddress"><button type="button" id="showIpAddress">Click to reveal</button></p>
+				</div>
+                <div class="card">
+					<h2>Timezone</h2>
+					<p id="preferredTimezone">Loading...</p>
+				</div>
+			</section>
+		</details>
 
-		<h4 class="divider" align="center" id="ipAddress"><strong> IP Address: </strong><button type="button" id="showIpAddress">Click to reveal</button></h4>
-		<br>
-		<br>
+		<details class="collapsible-section">
+			<summary class="section-header">
+				<h2>Browser-Specific Details</h2>
+			</summary>
+			<section class="details-grid">
+				<div class="card">
+					<h2>Device Memory</h2>
+					<p id="deviceMemory">Unsupported</p>
+					<footer class="card-footer">Supported on Chrome & Edge</footer>
+				</div>
+				<div class="card">
+					<h2>Battery Level</h2>
+					<p id="batteryLevel">Unsupported</p>
+					<footer class="card-footer">Supported on Chrome, Edge & Opera</footer>
+				</div>
+				<div class="card">
+					<h2>Battery Status</h2>
+					<p id="batteryCharging">Unsupported</p>
+					<footer class="card-footer">Supported on Chrome, Edge & Opera</footer>
+				</div>
+			</section>
+		</details>
 
-		<button font-size="1.5 rem" align="center" type="button" id="locationDetails" onclick="locationDetails()">
-			View Your Location Details
-		</button>
 
-	</div>
+		<div class="actions">
+			<button type="button" id="locationDetails">
+				View Your Location Details
+			</button>
+		</div>
+
+		<footer class="footer">
+			<a href="https://github.com/ValiantWind/Device-Details">Open-source on GitHub</a>
+		</footer>
+
+	</main>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-
-
 	<script src="script.js"></script>
-	<script src="ripple.js"></script>
+	<script src="animation.js"></script>
 
 </body>
 

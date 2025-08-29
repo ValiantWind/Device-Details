@@ -8,116 +8,169 @@
         url('https://ValiantWind.github.io/Location-Details/fonts/GothamSSm-Book.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-		font-display: swap;
-  }
+    font-display: swap;
+}
 
-*{
-  margin: 0;
-  padding: 0;
+:root {
+    --background-color: #121212;
+    --card-background-color: #1e1e1e;
+    --text-color: #ffffff;
+    --primary-color: #2BB1FF;
+    --divider-color: #3d3d3d;
+    --font-family: 'Gotham Screen Smart', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-	background: rgba(18, 18, 18, 1);
-}
-.main{
-    width: 100%;
-    height: 100%;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    font-size: 1rem;
+    color: #a0a0a0;
+}
+
+.collapsible-section {
+    margin-bottom: 1.5rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--divider-color);
+    cursor: pointer;
+    list-style: none;
+}
+
+.section-header::-webkit-details-marker {
+    display: none;
+}
+
+.section-header h2 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.section-header::after {
+    content: '›';
+    font-size: 2.5rem;
+    color: var(--divider-color);
+    transform: rotate(90deg);
+    transition: transform 0.2s ease-in-out;
+}
+
+.collapsible-section[open] > .section-header::after {
+    transform: rotate(-90deg);
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    overflow: hidden;
+}
+
+.card {
+    background-color: var(--card-background-color);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
     flex-direction: column;
-    background: rgba(18, 18, 18, 1);
-    font-family: 'Gotham Screen Smart', sans-serif;
 }
 
-h1{
-    color: white;
-    margin: 15px;
-    font-family: 'Gotham Screen Smart', sans-serif;
-    font-style: normal;
-		align-items: center;
-		align-content: center;
-    font-weight: 500;
-    line-height: 140%;
+.card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
 }
 
-h2{
-    color: white;
-    margin: 10px;
-    font-family: 'Gotham Screen Smart', sans-serif;
-    font-style: normal;
-		align-items: center;
-		align-content: center;
-    font-weight: 500;
-    line-height: 140%;
+.card p {
+    font-size: 1rem;
+    flex-grow: 1;
 }
 
-h3{
-    color: white;
-    margin-bottom: 50px;
-    font-family: 'Gotham Screen Smart', sans-serif;
-    font-style: normal;
-		align-items: center;
-		align-content: center;
-    font-weight: 500;
-}
-h4{
-    color: white;
-    margin: 15px;
-    font-family: 'Gotham Screen Smart', sans-serif;
-    font-style: normal;
-		align-items: center;
-		align-content: center;
-    font-weight: 500;
+.card-footer {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--divider-color);
+    font-size: 0.8rem;
+    color: #888;
+    text-align: right;
 }
 
-p{
-    color: white;
-    margin: 5px;
-    font-family: 'Gotham Screen Smart', sans-serif;
-    font-style: italic;
-		align-items: center;
-		align-content: center;
-    font-weight: 300;
-}
-
-hr.divider {
-	border: 2px solid #3d3d3d;
-	border-color: #3d3d3d;
-	width: 50%;
-	margin: 0 auto;
-	padding: 0;
+.actions {
+    text-align: center;
+    margin-top: 2rem;
 }
 
 button {
-  position: relative;
-  overflow: hidden;
-  transition: background 400ms;
-  color: #171717;
-  background-color: #2BB1FF;
-  padding: 1rem 2rem;
-  font-family: 'Gotham Screen Smart', Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
-  font-size: 1.2rem;
-  outline: 0;
-  border: 0;
-  border-radius: 0.25rem;
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3); /* black with 30% opacity */
-  cursor: pointer;
-	margin: 5px;
+    position: relative;
+    overflow: hidden;
+    transition: background 400ms;
+    color: #171717;
+    background-color: var(--primary-color);
+    padding: 1rem 2rem;
+    font-family: var(--font-family);
+    font-size: 1.2rem;
+    outline: 0;
+    border: 0;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }
 
-
 span.ripple {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple 600ms linear;
-  background-color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 600ms linear;
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 @keyframes ripple {
-  to {
-    transform: scale(3);
-    opacity: 0;
-  }
+    to {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+.footer {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.footer a {
+    color: var(--primary-color);
+    text-decoration: none;
 }
