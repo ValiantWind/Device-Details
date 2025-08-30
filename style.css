@@ -87,7 +87,7 @@ body {
     font-size: 2.5rem;
     color: var(--divider-color);
     transform: rotate(90deg);
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.15s ease-in-out;
 }
 
 .collapsible-section[open] > .section-header::after {
@@ -104,7 +104,7 @@ body {
 
 .card {
     background-color: var(--card-background-color);
-    padding: 1.5rem;
+    padding: 1.25rem;
     border-radius: 0.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
