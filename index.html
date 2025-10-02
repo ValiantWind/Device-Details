@@ -20,60 +20,14 @@
             <summary class="section-header">
                 <h2>General Details</h2>
             </summary>
-            <section class="details-grid">
-                <div class="card">
-                    <h2>Operating System</h2>
-                    <p id="deviceOS">Loading...</p>
-                </div>
-                <div class="card">
-                    <h2>Browser Name</h2>
-                    <p id="browserName">Loading...</p>
-                </div>
-                <div class="card">
-                    <h2>Browser Version</h2>
-                    <p id="browserVersion">Loading...</p>
-                </div>
-                <div class="card">
-                    <h2>Screen Resolution</h2>
-                    <p id="screenResolution">Loading...</p>
-                </div>
-                <div class="card">
-                    <h2>Cookies Enabled</h2>
-                    <p id="cookiesEnabled">Loading...</p>
-                </div>
-                <div class="card">
-                    <h2>IP Address</h2>
-                    <p id="ipAddress"><button type="button" id="showIpAddress">Click to reveal</button></p>
-                </div>
-            </section>
+            <section id="general-details-grid" class="details-grid"></section>
         </details>
 
         <details class="collapsible-section">
             <summary class="section-header">
                 <h2>Browser-Specific Details</h2>
             </summary>
-            <section class="details-grid">
-                <div class="card">
-                    <h2>Device Memory</h2>
-                    <p id="deviceMemory">Unsupported</p>
-                    <footer class="card-footer">Supported on Chrome & Edge</footer>
-                </div>
-                <div class="card">
-                    <h2>Battery Level</h2>
-                    <p id="batteryLevel">Unsupported</p>
-                    <footer class="card-footer">Supported on Chrome, Edge & Opera</footer>
-                </div>
-                <div class="card">
-                    <h2>Battery Status</h2>
-                    <p id="batteryCharging">Unsupported</p>
-                    <footer class="card-footer">Supported on Chrome, Edge & Opera</footer>
-                </div>
-                <div class="card">
-                    <h2>Network Type</h2>
-                    <p id="networkType">Unsupported</p>
-                    <footer class="card-footer">Supported on Chrome & Edge</footer>
-                </div>
-            </section>
+            <section id="browser-specific-details-grid" class="details-grid"></section>
         </details>
 
         <div class="actions">
@@ -88,6 +42,7 @@
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="card.js"></script>
     <script src="script.js"></script>
     <script src="animation.js"></script>
 </body>
