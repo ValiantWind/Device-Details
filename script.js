@@ -29,6 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             section: 'general-details-grid',
+            title: 'Max Touch Points',
+            id: 'screenResolution',
+            getValue: () => navigator.maxTouchPoints,
+        },
+        {
+            section: 'general-details-grid',
             title: 'Cookies Enabled',
             id: 'cookiesEnabled',
             getValue: () => {
@@ -64,6 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'batteryCharging',
             footer: 'Supported on Chrome, Edge & Opera',
             getValue: getBatteryStatus,
+        },
+         {
+            section: 'browser-specific-details-grid',
+            title: 'Data-Saver Mode',
+            id: 'dataSaverMode',
+            footer: 'Supported on Chrome, Edge & Opera',
+            getValue: () => {
+                if(!navigator.connection) return 'Unsupported';
+                const dataSaverMode = navigator.connection.saveData;
+                return dataSaverMode ? 'Enabled' : 'Disabled'
+            },
         },
     ];
 
