@@ -29,8 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             section: 'general-details-grid',
+            title: 'Screen Color Depth',
+            id: 'colorDepth',
+            getValue: async () => window.screen.colorDepth,
+        },
+        {
+            section: 'general-details-grid',
+            title: 'Device Pixel Ratio',
+            id: 'dpr',
+            getValue: async () => window.devicePixelRatio,
+        },
+        {
+            section: 'general-details-grid',
             title: 'Max Touch Points',
-            id: 'screenResolution',
+            id: 'maxTouchPoints',
             getValue: () => navigator.maxTouchPoints,
         },
         {
@@ -63,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'batteryLevel',
             footer: 'Supported on Chrome, Edge & Opera',
             getValue: getBatteryLevel,
+            listener: batteryLevelListener,
         },
         {
             section: 'browser-specific-details-grid',
@@ -70,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'batteryCharging',
             footer: 'Supported on Chrome, Edge & Opera',
             getValue: getBatteryStatus,
+            listener: batteryStatusListener,
         },
          {
             section: 'browser-specific-details-grid',
@@ -132,6 +146,32 @@ async function getBatteryStatus() {
 
     const battery = await navigator.getBattery();
     return battery.charging ? 'Charging' : 'Not Charging';
+}
+
+async function batteryLevelListener(updateCallback) {
+    if (!navigator.getBattery) return;
+
+    try {
+        const battery = await navigator.getBattery();
+        battery.addEventListener('levelchange', () => {
+            updateCallback(`${Math.floor(battery.level * 100)}%`);
+        });
+    } catch (error) {
+        console.error('Error setting up battery level listener:', error);
+    }
+}
+
+async function batteryStatusListener(updateCallback) {
+    if (!navigator.getBattery) return;
+    
+    try {
+        const battery = await navigator.getBattery();
+        battery.addEventListener('chargingchange', () => {
+            updateCallback(battery.charging ? 'Charging' : 'Not Charging');
+        });
+    } catch (error) {
+        console.error('Error setting up battery status listener:', error);
+    }
 }
 
 function setupIpButton() {

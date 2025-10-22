@@ -2,7 +2,9 @@ class Card {
     constructor(cardData) {
         this.cardData = cardData;
         this.element = this.createCardElement();
+        this.valueElement = this.element.querySelector(`#${this.cardData.id}`);
         this.update();
+        this.initializeDynamicUpdates();
     }
 
     createCardElement() {
@@ -28,14 +30,25 @@ class Card {
         return card;
     }
 
+    setValue(html) {
+        if (this.valueElement) {
+            this.valueElement.innerHTML = html;
+        }
+    }
+
     async update() {
-        const valueElement = this.element.querySelector(`#${this.cardData.id}`);
         try {
             const value = await this.cardData.getValue();
-            valueElement.innerHTML = value;
+            this.setValue(value);
         } catch (error) {
             console.error(`Error updating card "${this.cardData.title}":`, error);
-            valueElement.textContent = 'Error';
+            this.setValue('Error');
+        }
+    }
+
+    initializeDynamicUpdates() {
+        if (typeof this.cardData.listener === 'function') {
+            this.cardData.listener(this.setValue.bind(this));
         }
     }
 }
